@@ -1,251 +1,101 @@
-// import React, { useState } from 'react';
-// import emailjs from 'emailjs-com';
+import React, { useState } from "react";
 
-// export default function Contact() {
-//   const [formData, setFormData] = useState({
-//     name: '',
-//     email: '',
-//     number: '',
-//     address: '',
-//     age: '',
-//     code: ''
-//   });
-//   const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+const Contact = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");  // State for email
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-//   const scriptURL = 'https://script.google.com/macros/s/AKfycbyuS6MprBBXSzV0bqwWKXj1AC3T-68dYBEUZvYvQtg37aiTnMuJYUDLZw8cvQeVLYOI/exec';
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-//   const generateRandomCode = (length = 6) => {
-//     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-//     let result = '';
-//     for (let i = 0; i < length; i++) {
-//       result += chars.charAt(Math.floor(Math.random() * chars.length));
-//     }
-//     return result;
-//   };
+  setLoading(true);
 
-//   const handleChange = e => {
-//     const { name, value } = e.target;
-//     setFormData(prev => ({ ...prev, [name]: value }));
-//   };
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyrZ_lOWVnCearM4IigV6G3JHuPInWc5-LVsLdmj0WEDVsjGrZ5AzJaZiWZ4hlHXwIR2A/exec";
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setStatus('loading');
-//     const updatedData = { ...formData, code: generateRandomCode() };
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("email", email);
+  formData.append("age", age);  // Add email to the FormData
 
-//     const formPayload = new FormData();
-//     Object.entries(updatedData).forEach(([key, value]) => {
-//       formPayload.append(key, value);
-//     });
+  // Log form data for debugging
+  console.log("Form Data: ", { name, email, age });
 
-//     try {
-//       const response = await fetch(scriptURL, {
-//         method: 'POST',
-//         body: formPayload
-//       });
-//       if (response.ok) {
-//         setStatus('success');
-//         setFormData({ name: '', email: '', number: '', address: '', age: '', code: '' });
-//         setTimeout(() => setStatus('idle'), 3000);
-//       } else {
-//         throw new Error('Submission failed');
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       setStatus('error');
-//     } finally {
-//       setTimeout(() => {
-//         if (status !== 'idle') setStatus('idle');
-//       }, 3000);
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: '20px', background: '#f5f5f5', minHeight: '100vh' }}>
-//       <form onSubmit={handleSubmit} style={{
-//         background: 'white',
-//         padding: '20px',
-//         maxWidth: '400px',
-//         margin: '40px auto',
-//         boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-//         borderRadius: '8px'
-//       }}>
-//         <h2 style={{ textAlign: 'center' }}>Submit Your Info</h2>
-
-//         <input type="text" name="name" placeholder="Name" required value={formData.name} onChange={handleChange}
-//           style={inputStyle} />
-//         <input type="email" name="email" placeholder="Email" required value={formData.email} onChange={handleChange}
-//           style={inputStyle} />
-//         <input type="tel" name="number" placeholder="Phone Number" required value={formData.number} onChange={handleChange}
-//           style={inputStyle} />
-//         <textarea name="address" placeholder="Address" required value={formData.address} onChange={handleChange}
-//           style={inputStyle} />
-//         <input type="number" name="age" placeholder="Age" required value={formData.age} onChange={handleChange}
-//           style={inputStyle} />
-//         <input type="hidden" name="code" value={formData.code} />
-
-//         <button type="submit" disabled={status === 'loading'} style={{
-//           backgroundColor: '#007BFF',
-//           color: 'white',
-//           border: 'none',
-//           padding: '12px',
-//           width: '100%',
-//           borderRadius: '4px',
-//           cursor: 'pointer',
-//           fontSize: '16px'
-//         }}>
-//           Submit
-//         </button>
-
-//         {status === 'loading' && <div className="loading" style={messageStyle('#ffa500')}>Submitting...</div>}
-//         {status === 'success' && <div className="success" style={messageStyle('green')}>Form submitted successfully!</div>}
-//         {status === 'error' && <div className="error" style={messageStyle('red')}>Something went wrong.</div>}
-//       </form>
-//     </div>
-//   );
-// }
-
-// const inputStyle = {
-//   width: '100%',
-//   padding: '10px',
-//   marginBottom: '12px',
-//   border: '1px solid #ccc',
-//   borderRadius: '4px',
-//   fontSize: '16px'
-// };
-
-// const messageStyle = (color) => ({
-//   textAlign: 'center',
-//   marginTop: '15px',
-//   fontSize: '15px',
-//   color
-// });
-
-import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
-
-
-export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    number: '',
-    address: '',
-    age: '',
-    code: ''
-  });
-  const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
-
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxxQ5c-uK7AUGbKTM2Wj_g_KX0k0zMYJ8GB1sTnOYIELHMoCmpJrQQ1zZI4drXbKakA/exec';
-
-  const generateRandomCode = (length = 6) => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-  };
-
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('loading');
-    const updatedData = { ...formData, code: generateRandomCode() };
-
-    // --- Send to Google Sheet ---
-    const formPayload = new FormData();
-    Object.entries(updatedData).forEach(([key, value]) => {
-      formPayload.append(key, value);
+  try {
+    const response = await fetch(scriptURL, {
+      method: "POST",
+      body: formData,
     });
 
-    try {
-      await fetch(scriptURL, {
-        method: 'POST',
-        body: formPayload
-      });
+    if (response.ok) {
+      setSubmitted(true);
+      setName("");
+      setEmail("");
+      setAge("");  // Clear email field after submission
 
-      // --- Send to EmailJS (without the code field) ---
-      const { code, ...emailData } = updatedData;
-      await emailjs.send(
-        'service_fe5soq1',     // replace with your actual EmailJS service ID
-        'template_uhzk8bs',    // replace with your EmailJS template ID
-        emailData,
-        'DkZj-XRk-54KH9os-'      // replace with your EmailJS public key (user ID)
-      );
-
-      setStatus('success');
-      setFormData({ name: '', email: '', number: '', address: '', age: '', code: '' });
-    } catch (error) {
-      console.error(error);
-      setStatus('error');
-    } finally {
-      setTimeout(() => setStatus('idle'), 3000);
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 2000);
+    } else {
+      alert("Something went wrong!");
     }
-  };
-
-  return (
-    <div style={{ padding: '20px', background: '#f5f5f5', minHeight: '100vh' }}>
-      <form onSubmit={handleSubmit} style={{
-        background: 'white',
-        padding: '20px',
-        maxWidth: '400px',
-        margin: '40px auto',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-        borderRadius: '8px'
-      }}>
-        <h2 style={{ textAlign: 'center' }}>Submit Your Info</h2>
-
-        <input type="text" name="name" placeholder="Name" required value={formData.name} onChange={handleChange}
-          style={inputStyle} />
-        <input type="email" name="email" placeholder="Email" required value={formData.email} onChange={handleChange}
-          style={inputStyle} />
-        <input type="tel" name="number" placeholder="Phone Number" required value={formData.number} onChange={handleChange}
-          style={inputStyle} />
-        <textarea name="address" placeholder="Address" required value={formData.address} onChange={handleChange}
-          style={inputStyle} />
-        <input type="number" name="age" placeholder="Age" required value={formData.age} onChange={handleChange}
-          style={inputStyle} />
-        <input type="hidden" name="code" value={formData.code} />
-
-        <button type="submit" disabled={status === 'loading'} style={{
-          backgroundColor: '#007BFF',
-          color: 'white',
-          border: 'none',
-          padding: '12px',
-          width: '100%',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          fontSize: '16px'
-        }}>
-          Submit
-        </button>
-
-        {status === 'loading' && <div className="loading" style={messageStyle('#ffa500')}>Submitting...</div>}
-        {status === 'success' && <div className="success" style={messageStyle('green')}>Form submitted successfully!</div>}
-        {status === 'error' && <div className="error" style={messageStyle('red')}>Something went wrong.</div>}
-      </form>
-    </div>
-  );
-}
-
-const inputStyle = {
-  width: '100%',
-  padding: '10px',
-  marginBottom: '12px',
-  border: '1px solid #ccc',
-  borderRadius: '4px',
-  fontSize: '16px'
+  } catch (error) {
+    alert("Error submitting the form!");
+  } finally {
+    setLoading(false);
+  }
 };
 
-const messageStyle = (color) => ({
-  textAlign: 'center',
-  marginTop: '15px',
-  fontSize: '15px',
-  color
-});
 
+  return (
+    <div className="p-4 max-w-sm mx-auto">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <label className="block">
+          <span className="text-gray-700">Name</span>
+          <input
+            type="text"
+            value={name}
+            required
+            onChange={(e) => setName(e.target.value)}
+            className="mt-1 block w-full border px-3 py-2 rounded shadow"
+          />
+        </label>
+
+        <label className="block">
+          <span className="text-gray-700">Email</span>
+          <input
+            type="email"
+            value={email}
+            required
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 block w-full border px-3 py-2 rounded shadow"
+          />
+        </label>
+
+        <label className="block">
+          <span className="text-gray-700">Age</span>
+          <input
+            type="number"
+            value={age}
+            required
+            onChange={(e) => setAge(e.target.value)}
+            className="mt-1 block w-full border px-3 py-2 rounded shadow"
+          />
+        </label>
+
+        <button
+          type="submit"
+          className={`bg-blue-600 text-white px-4 py-2 rounded ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+          disabled={loading}  // Disable button while loading
+        >
+          {loading ? "Submitting..." : "Submit"}
+        </button>
+      </form>
+
+      {submitted && <p className="mt-4 text-green-600">Form submitted!</p>}
+    </div>
+  );
+};
+
+export default Contact;
