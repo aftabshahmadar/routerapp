@@ -136,7 +136,7 @@ export default function Contact() {
   });
   const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
 
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbyuS6MprBBXSzV0bqwWKXj1AC3T-68dYBEUZvYvQtg37aiTnMuJYUDLZw8cvQeVLYOI/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbxaxIv1VgcQ0Pa5tySs2XNXHirQp9nFsKqES1voNkQ/dev';
 
   const generateRandomCode = (length = 6) => {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
