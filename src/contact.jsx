@@ -6,7 +6,7 @@ const Contact = () => {
   const [age, setAge] = useState("");
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("");
-   const [number, setNumber] = useState(""); // 👈 Gender state
+  const [number, setNumber] = useState(""); 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +22,7 @@ const Contact = () => {
     formData.append("email", email);
     formData.append("age", age);
     formData.append("address", address);
-    formData.append("gender", gender); // 👈 Append gender
+    formData.append("gender", gender);
     formData.append("number", number);
     console.log("Form Data: ", { name, email, age, address, gender, number });
 
@@ -53,105 +53,110 @@ const Contact = () => {
   };
 
   return (
-    <div className="p-4 max-w-sm mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <label className="block">
-          <span className="text-gray-700">Name</span>
-          <input
-            type="text"
-            value={name}
-            required
-            onChange={(e) => setName(e.target.value)}
-            className="mt-1 block w-full border px-3 py-2 rounded shadow"
-          />
-        </label>
-
-        <label className="block">
-          <span className="text-gray-700">Email</span>
-          <input
-            type="email"
-            value={email}
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full border px-3 py-2 rounded shadow"
-          />
-        </label>
-
-        <label className="block">
-          <span className="text-gray-700">Age</span>
-          <input
-            type="number"
-            value={age}
-            required
-            onChange={(e) => setAge(e.target.value)}
-            className="mt-1 block w-full border px-3 py-2 rounded shadow"
-          />
-        </label>
-
-        <label className="block">
-          <span className="text-gray-700">Address</span>
-          <input
-            type="text"
-            value={address}
-            required
-            onChange={(e) => setAddress(e.target.value)}
-            className="mt-1 block w-full border px-3 py-2 rounded shadow"
-          />
-        </label>
-
-        <div className="block">
-          <span className="text-gray-700">Gender</span>
-          <div className="mt-1 flex space-x-4">
-            <label className="flex items-center space-x-2">
+    <div className="container mt-5">
+      <div className="card shadow-sm">
+        <div className="card-body">
+          <h3 className="card-title text-center mb-4">Contact Form</h3>
+          <form onSubmit={handleSubmit} className="row g-3">
+            <div className="col-12">
+              <label className="form-label">Name</label>
               <input
-                type="radio"
-                name="gender"
-                value="Male"
-                checked={gender === "Male"}
-                onChange={(e) => setGender(e.target.value)}
+                type="text"
+                value={name}
+                required
+                onChange={(e) => setName(e.target.value)}
+                className="form-control"
               />
-              <span>Male</span>
-            </label>
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="gender"
-                value="Female"
-                checked={gender === "Female"}
-                onChange={(e) => setGender(e.target.value)}
-              />
-              <span>Female</span>
-            </label>
+            </div>
 
-            
-      
-          </div>
+            <div className="col-12">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                value={email}
+                required
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-control"
+              />
+            </div>
+
+            <div className="col-md-6">
+              <label className="form-label">Age</label>
+              <input
+                type="number"
+                value={age}
+                required
+                onChange={(e) => setAge(e.target.value)}
+                className="form-control"
+              />
+            </div>
+
+            <div className="col-md-6">
+              <label className="form-label">Phone Number</label>
+              <input
+                type="number"
+                value={number}
+                required
+                onChange={(e) => setNumber(e.target.value)}
+                className="form-control"
+              />
+            </div>
+
+            <div className="col-12">
+              <label className="form-label">Address</label>
+              <input
+                type="text"
+                value={address}
+                required
+                onChange={(e) => setAddress(e.target.value)}
+                className="form-control"
+              />
+            </div>
+
+            <div className="col-12">
+              <label className="form-label">Gender</label>
+              <div className="form-check form-check-inline">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Male"
+                  checked={gender === "Male"}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="form-check-input"
+                />
+                <label className="form-check-label">Male</label>
+              </div>
+              <div className="form-check form-check-inline">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Female"
+                  checked={gender === "Female"}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="form-check-input"
+                />
+                <label className="form-check-label">Female</label>
+              </div>
+            </div>
+
+            <div className="col-12 text-center">
+              <button
+                type="submit"
+                className={`btn btn-primary w-100 ${loading ? "disabled" : ""}`}
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Submit"}
+              </button>
+            </div>
+          </form>
+
+          {submitted && (
+            <div className="alert alert-success mt-4 text-center" role="alert">
+              Form submitted successfully!
+            </div>
+          )}
         </div>
-
-          <label className="block">
-          <span className="text-gray-700">Number</span>
-          <input
-            type="number"
-            value={number}
-            required
-            onChange={(e) => setNumber(e.target.value)}
-            className="mt-1 block w-full border px-3 py-2 rounded shadow"
-          />
-        </label>
-
-
-        <button
-          type="submit"
-          className={`bg-blue-600 text-white px-4 py-2 rounded ${
-            loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={loading}
-        >
-          {loading ? "Submitting..." : "Submit"}
-        </button>
-      </form>
-
-      {submitted && <p className="mt-4 text-green-600">Form submitted!</p>}
+      </div>
     </div>
   );
 };
