@@ -3,7 +3,8 @@ import React, { useState } from "react";
 const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [age, setAge] = useState("");  // State for email
+  const [age, setAge] = useState("");  
+  const [address, setAddress] = useState("");  // State for email
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -12,15 +13,16 @@ const Contact = () => {
 
   setLoading(true);
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyrZ_lOWVnCearM4IigV6G3JHuPInWc5-LVsLdmj0WEDVsjGrZ5AzJaZiWZ4hlHXwIR2A/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxLt9PtHYpwh81PHIXxUaywcdUTVAnbs-9W8fQqwwRuogcxxO0iFcMBukhJMHkkF_eTsg/exec";
 
   const formData = new FormData();
   formData.append("name", name);
   formData.append("email", email);
-  formData.append("age", age);  // Add email to the FormData
+  formData.append("age", age);
+   formData.append("address", address);  // Add email to the FormData
 
   // Log form data for debugging
-  console.log("Form Data: ", { name, email, age });
+  console.log("Form Data: ", { name, email, age, address });
 
   try {
     const response = await fetch(scriptURL, {
@@ -32,7 +34,8 @@ const Contact = () => {
       setSubmitted(true);
       setName("");
       setEmail("");
-      setAge("");  // Clear email field after submission
+      setAge(""); 
+      setAddress("") // Clear email field after submission
 
       setTimeout(() => {
         setSubmitted(false);
@@ -80,6 +83,17 @@ const Contact = () => {
             value={age}
             required
             onChange={(e) => setAge(e.target.value)}
+            className="mt-1 block w-full border px-3 py-2 rounded shadow"
+          />
+        </label>
+
+         <label className="block">
+          <span className="text-gray-700">Address</span>
+          <input
+            type="text"
+            value={address}
+            required
+            onChange={(e) => setAddress(e.target.value)}
             className="mt-1 block w-full border px-3 py-2 rounded shadow"
           />
         </label>
